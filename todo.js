@@ -1,9 +1,9 @@
 const todos = [];
-
+//Get DOM Element
 const input = document.getElementById('taskInput');
 const submit = document.getElementById('submit');
 const list = document.getElementById('taskList');
-
+//fetch saved task from local storage
 window.addEventListener('DOMContentLoaded', () => {
   const saved = JSON.parse(localStorage.getItem('todos')) || [];
   todos.push(...saved);
@@ -16,12 +16,13 @@ function addTodo() {
   const text = input.value.trim();
   if (!text) return alert('Please write something');
 
+  //check duplicate tasks
   const isDuplicate = todos.some(todo => todo.text.toLowerCase() === text.toLowerCase());
   if (isDuplicate) {
     alert('This task already exists!');
     return;
   }
-
+//assign unique ID to a task
   todos.push({ 
     id: Date.now(), 
     text,
@@ -32,7 +33,7 @@ function addTodo() {
   updateStorage();       
   renderTodos();         
 }
-
+//display all tasks
 function renderTodos() {
   list.innerHTML = ''; 
 
@@ -103,7 +104,7 @@ function enterEditMode(li, todo) {
     const newText = inputEdit.value.trim();
     if (!newText) return alert('Task cannot be empty');
 
-    
+    //check duplicate while editing
     const isDuplicate = todos.some(t => 
       t.id !== todo.id && t.text.toLowerCase() === newText.toLowerCase()
     );
@@ -120,7 +121,7 @@ function enterEditMode(li, todo) {
   li.appendChild(saveBtn);
 }
 
-
+//save current tasks to local storage
 function updateStorage() {
   localStorage.setItem('todos', JSON.stringify(todos));
 }
